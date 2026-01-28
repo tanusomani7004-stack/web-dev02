@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event propogation</title>
+    <style>
+        #button{
+            width:200px
+        }
+        
+        #outer{
+            background-color: burlywood;
+        }
+
+        #inner{
+            background-color: black;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="outer">
+        <div id="middle">
+            <button id="inner">Click</button>
+        </div>
+    </div>
+
+    <script>
+        let outer = document.querySelector('#outer')
+        let middle = document.querySelector('#middle')
+        let inner= document.querySelector('#inner')
+
+        outer.addEventListener('click',function(){
+            event.stopPropagation()
+            alert('outer div')
+        })
+
+          outer.addEventListener('click',function(){
+            event.stopPropagation()
+            alert('middle div')
+        })
+
+          outer.addEventListener('click',function(){
+            event.stopPropagation()
+            alert('inner div')
+        })
+
+        //yha pe agr tue likhenge toh parent se child pe jaayega or false likhenge toh childe se parent
+        //bubbling face when false or capturing face when true
+    </script>
+</body>
+</html>
