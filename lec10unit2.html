@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        console.log('start cooking')
+
+        function boilWater(callback){
+            console.log('boiling water')
+            setTimeout(()=>{
+                console.log('water boiled');
+                callback();
+            },10000)
+        }
+
+        function addmaggie(callback){      
+            console.log('Adding Maggie')
+            setTimeout(()=>{
+                console.log('maggie added');
+                callback();
+            },5000)
+        }
+
+        function addmasala(callback){
+            console.log('Adding Masala')
+            setTimeout(()=>{
+                console.log('masala added');
+                callback();
+            },3000)
+        }
+
+        function serve(){
+            console.log('Serve and eat!')
+            
+        }
+
+        boilWater(()=>{                   // arrow function imidiately call nhi krta hai jab bhi koi  argument le toh ese likhte hai
+            addmaggie(()=>{
+                addmasala(()=>{
+                    serve()
+                })
+            })
+        })
+
+        // boilWater();
+        // addmaggie();
+        // addmasala();
+        // serve();   yeh nhi krna kbhi bhi
+    </script>
+</body>
+</html>
