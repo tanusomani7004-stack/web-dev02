@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Event Dashboard</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background: linear-gradient(135deg,#cc74c3,#463d86,pink);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.dashboard{
+    width:90%;
+    max-width:1100px;
+    background:#f5f7fa;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:20px;
+    color:#333;
+}
+
+.top{
+    display:flex;
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:10px;
+    padding:15px;
+    flex:1;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.card h2{
+    margin-bottom:10px;
+    color:#3a085b;
+}
+
+label{
+    display:block;
+    margin-top:10px;
+    font-size:14px;
+}
+
+input, select, textarea{
+    width:100%;
+    padding:8px;
+    margin-top:5px;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
+
+textarea{
+   
+    height:60px;
+}
+
+button{
+    margin-top:12px;
+    padding:8px 14px;
+    border:none;
+    border-radius:6px;
+    background:linear-gradient(rgb(51,26,97),rgb(166,69,85),rgb(176,78,190));
+    color:white;
+    cursor:pointer;
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 12px rgba(0,0,0,0.2);
+}
+
+#btns-container{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+#event-handling-container div{
+    background:#eef1f6;
+    padding:10px;
+    border-radius:8px;
+    margin-bottom:10px;
+    position:relative;
+    opacity:0;
+    transform:translateY(20px);
+    animation:slideIn 0.4s ease forwards;
+}
+
+@keyframes slideIn{
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.fade-out{
+    animation:fadeOut 0.3s ease forwards;
+}
+
+@keyframes fadeOut{
+    to{
+        opacity:0;
+        transform:translateY(-10px);
+    }
+}
+
+#event-handling-container button{
+    position:absolute;
+    right:10px;
+    top:10px;
+    background:red;
+    padding:2px 6px;
+}
+
+.category{
+    display:inline-block;
+    margin-top:5px;
+    padding:4px 10px;
+    border-radius:6px;
+    color:#fff;
+    background: linear-gradient(rgb(238, 159, 172),rgb(106,32,44));
+    font-size:12px;
+}
+
+.dom-demo{
+    margin-top:20px;
+    background:white;
+    padding:12px;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+</style>
+</head>
+
+<body>
+
+<div class="dashboard">
+<h1>Smart Event Dashboard</h1>
+
+<div class="top">
+
+<div class="card">
+<h2>Add New Event</h2>
+<form id="event-form">
+<label>Event Title</label>
+<input type="text" id="event-title">
+
+<label>Event Date</label>
+<input type="date" id="event-date">
+
+<label>Category</label>
+<select id="event-category">
+<option>Conference</option>
+<option>Webinar</option>
+<option>Social</option>
+<option>Workshop</option>
+<option>Meetup</option>
+</select>
+
+<label>Description</label>
+<textarea id="event-description"></textarea>
+
+<button type="submit">Add Event</button>
+</form>
+</div>
+
+<div class="card">
+<h2>My Events</h2>
+<div id="btns-container">
+<button id="clear-button">Clear All</button>
+<button id="add-sample">Add Sample</button>
+</div>
+<div id="event-handling-container">
+No events yet. Add your first event!
+</div>
+</div>
+
+</div>
+
+<div class="dom-demo">
+<h3>DOM Manipulation Demo</h3>
+<input type="text" id="key-output" value="Press any key">
+</div>
+
+</div>
+
+<script>
+let form = document.querySelector('#event-form');
+let title = document.querySelector('#event-title');
+let date = document.querySelector('#event-date');
+let category = document.querySelector('#event-category');
+let description = document.querySelector('#event-description');
+let container = document.querySelector('#event-handling-container');
+let clearBtn = document.querySelector('#clear-button');
+let addSample = document.querySelector('#add-sample');
+
+function createCard(data){
+    let div = document.createElement('div');
+    div.innerHTML = `
+        <button>X</button>
+        <h4>${data.title}</h4>
+        <span>${data.date}</span><br>
+        <span class="category">${data.category}</span>
+        <p>${data.desc}</p>
+    `;
+
+    div.querySelector('button').addEventListener('click',()=>{
+        div.classList.add('fade-out');
+        setTimeout(()=>div.remove(),300);
+    });
+
+    container.appendChild(div);
+}
+
+form.addEventListener('submit',(e)=>{
+    e.preventDefault();
+
+    if(container.innerText.includes("No events")){
+        container.innerHTML="";
+    }
+
+    createCard({
+        title:title.value || "Untitled Event",
+        date:date.value || "No Date",
+        category:category.value,
+        desc:description.value
+    });
+
+    form.reset();
+});
+
+clearBtn.addEventListener('click',()=>{
+    container.innerHTML="No events yet. Add your first event!";
+});
+
+addSample.addEventListener('click',()=>{
+    container.innerHTML="";
+    createCard({
+        title:"AI Webinar",
+        date:"2026-09-22",
+        category:"Webinar",
+        desc:"Introduction to AI"
+    });
+    createCard({
+        title:"Conference Meeting",
+        date:"2026-04-22",
+        category:"Conference",
+        desc:"Learn AI basics"
+    });
+});
+
+const keyOutput = document.querySelector('#key-output');
+document.addEventListener('keydown',(e)=>{
+    keyOutput.value = "You pressed: " + e.key;
+});
+</script>
+
+</body>
+</html>
